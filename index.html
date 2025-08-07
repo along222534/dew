@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>เป็นแฟนกันนะ</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #fce4ec;
+      font-family: 'Arial', sans-serif;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .container {
+      position: relative;
+      background-color: #fff;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      max-width: 90%;
+      z-index: 2;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      color: #e91e63;
+      margin-bottom: 20px;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 20px;
+      position: relative;
+    }
+
+    button {
+      padding: 15px 30px;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      color: #fff;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+
+    #yesButton {
+      background-color: #4caf50;
+    }
+
+    #yesButton:hover {
+      background-color: #43a047;
+      transform: scale(1.05);
+    }
+
+    #noButton {
+      background-color: #ff5252;
+    }
+
+    #noButton:hover {
+      background-color: #e53935;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .success-message {
+      color: #e91e63;
+      font-size: 2.5rem;
+      animation: bounceIn 0.8s ease-out;
+    }
+
+    @keyframes bounceIn {
+      0% { transform: scale(0.3); opacity: 0; }
+      50% { transform: scale(1.1); opacity: 1; }
+      70% { transform: scale(0.9); }
+      100% { transform: scale(1); }
+    }
+
+    #cute-gif {
+      width: 120px;
+      height: auto;
+      margin-bottom: 20px;
+    }
+
+    .heart {
+      position: absolute;
+      font-size: 2em;
+      color: #ff69b4;
+      pointer-events: none;
+      animation: float-up 3s ease-out forwards;
+      z-index: 1;
+    }
+
+    @keyframes float-up {
+      0% { transform: translateY(0) scale(1); opacity: 1; }
+      100% { transform: translateY(-500px) scale(1.5); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img id="cute-gif" src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExYjZyZnllOHY1eGFkMHo3cWdtOXEyMmR1c2xienppOGk5aDF5d2RyYSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/mmfnDaNegqw6wc6KnM/giphy.gif" alt="Cute animated GIF" />
+    <h1 id="question">เป็นแฟนเค้าน้าาา</h1>
+    <div class="buttons">
+      <button id="yesButton">เป็น!</button>
+      <button id="noButton">ม่ายเป็น</button>
+    </div>
+    <audio id="background-music" loop autoplay>
+      <source src="PUN - Skit Official Audio.mp3" type="audio/mpeg" />
+    </audio>
+  </div>
+
+  <script>
+    const yesButton = document.getElementById('yesButton');
+    const noButton = document.getElementById('noButton');
+    const question = document.getElementById('question');
+    const buttonsContainer = document.querySelector('.buttons');
+    const cuteGif = document.getElementById('cute-gif');
+    const backgroundMusic = document.getElementById('background-music');
+
+    let noClicks = 0;
+    let yesSize = 1; // ขนาดเริ่มต้น
+
+    document.addEventListener('click', () => {
+      backgroundMusic.play().catch(error => console.log("Audio error:", error));
+    }, { once: true });
+
+    // เมื่อกดปุ่ม "ม่ายเป็น"
+    noButton.addEventListener('click', () => {
+      noClicks++;
+      yesSize += 0.3;
+      yesButton.style.transform = `scale(${yesSize})`;
+
+      const noMessages = [
+        'แน่ใจ๊?',
+        'คิดดี๊ๆ',
+        'ไม่เป็นจีงงงงดิ',
+        'เอาดีๆไอเด่กก',
+        'ถามจริงงงง!',
+        'อะเค...ไม่เป็นยัย',
+      ];
+      question.textContent = noMessages[noClicks % noMessages.length];
+
+      if (yesSize > 3.5) {
+        noButton.classList.add('hidden');
+      }
+    });
+
+    // เมื่อกดปุ่ม "เป็น!"
+    yesButton.addEventListener('click', () => {
+      question.textContent = 'สุดท้ายก็ต้องเป็นห้าห้าห้าา😈😈 รักเบบี๋นะคะ❤️';
+      question.classList.add('success-message');
+      buttonsContainer.classList.add('hidden');
+      cuteGif.src = "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3ZDM2NDUzNWQ4YTVoZGdib3Q5cDZzMXdmaDc3cTFlNGI2NTNtY2N6aiZlcD12MV9naWZzX3JlbGF0ZWQmY3Q9Zw/nE59vl2e7rWzbskQZ9/giphy.gif";
+      createHeartEffect();
+      backgroundMusic.pause();
+    });
+
+    // สร้างหัวใจลอย
+    function createHeartEffect() {
+      for (let i = 0; i < 20; i++) {
+        const heart = document.createElement('div');
+        heart.classList.add('heart');
+        heart.textContent = '❤️';
+        heart.style.left = `${Math.random() * 100}vw`;
+        heart.style.animationDelay = `${Math.random() * 2}s`;
+        document.body.appendChild(heart);
+      }
+    }
+  </script>
+</body>
+</html>
