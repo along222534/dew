@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>💌</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      text-align: center;
+      overflow: hidden;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    video.background-video {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -2;
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 192, 203, 0.2);
+      z-index: -1;
+    }
+
+    .container {
+      background-color: rgba(255, 255, 255, 0.85);
+      padding: 30px;
+      border-radius: 20px;
+      max-width: 600px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      font-size: 2rem;
+      color: #e91e63;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 1.1rem;
+      color: #333;
+      text-align: left;
+      line-height: 1.6;
+      white-space: pre-wrap;
+    }
+
+    .next-btn {
+      margin-top: 20px;
+      padding: 12px 25px;
+      background: #4caf50;
+      color: white;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .next-btn:hover {
+      background: #43a047;
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+  <video class="background-video" autoplay loop muted playsinline>
+    <source src="776499894.479632.mp4" type="video/mp4">
+  </video>
+  <div class="overlay"></div>
+
+  <div class="container">
+    <h1> 💌</h1>
+    <p id="letter-text"></p>
+    <button class="next-btn hidden" id="next-btn" onclick="goNext()">ไปหน้าสุดท้าย ➡</button>
+    <audio id="bg-music" autoplay loop>
+      <source src="YENTED -  adore ft Minchang gomen Official Video.mp3" type="audio/mpeg">
+    </audio>
+  </div>
+
+  <script>
+    const text = `เบบี๋กากๆๆๆๆๆๆ😈😈`;
+    
+    let index = 0;
+    const letterEl = document.getElementById("letter-text");
+    const nextBtn = document.getElementById("next-btn");
+    const music = document.getElementById("bg-music");
+
+    function typeLetter() {
+      if (index < text.length) {
+        letterEl.textContent += text.charAt(index);
+        index++;
+        setTimeout(typeLetter, 50);
+      } else {
+        nextBtn.classList.remove("hidden");
+      }
+    }
+    typeLetter();
+
+    function goNext() {
+      window.location.href = "final.html";
+    }
+
+    document.addEventListener('click', () => {
+      music.volume = 0.4;
+      music.play().catch(()=>{});
+    });
+  </script>
+</body>
+</html>

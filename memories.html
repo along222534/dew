@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Memmories</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      text-align: center;
+      overflow: hidden;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    video.background-video {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -2;
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 192, 203, 0.2);
+      z-index: -1;
+    }
+
+    .container {
+      background-color: rgba(255, 255, 255, 0.85);
+      padding: 20px;
+      border-radius: 20px;
+      max-width: 90%;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      font-size: 2rem;
+      color: #e91e63;
+      margin-bottom: 10px;
+    }
+
+    /* สไลด์โชว์ */
+    .slideshow-container {
+      max-width: 400px;
+      margin: auto;
+      position: relative;
+    }
+
+    .slide {
+      display: none;
+      width: 100%;
+      border-radius: 15px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+
+    /* ปุ่มถัดไป */
+    .next-btn {
+      margin-top: 20px;
+      padding: 12px 25px;
+      background: #4caf50;
+      color: white;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .next-btn:hover {
+      background: #43a047;
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+  <video class="background-video" autoplay loop muted playsinline>
+    <source src="776500180.550421.mp4" type="video/mp4">
+  </video>
+  <div class="overlay"></div>
+
+  <div class="container">
+    <h1>Memmories💖</h1>
+    <div class="slideshow-container">
+      <img class="slide" src="LINE_ALBUM_15768_250810_1.jpg" alt="รูป 1">
+      <img class="slide" src="LINE_ALBUM_15768_250810_2.jpg" alt="รูป 2">
+      <img class="slide" src="LINE_ALBUM_15768_250810_3.jpg" alt="รูป 3">
+      <img class="slide" src="S__140361734.jpg" alt="รูป 4">
+      <img class="slide" src="S__140361736.jpg" alt="รูป 5">
+      <img class="slide" src="S__140361737.jpg" alt="รูป 6">
+      <img class="slide" src="S__140361738.jpg" alt="รูป 7">
+        <img class="slide" src="S__140361739.jpg" alt="รูป 8">
+
+    </div>
+    <button class="next-btn" onclick="goNext()">ถัดไป ➡</button>
+    <audio id="background-music" loop autoplay>
+      <source src="LANDOKMAI ft James Alyn - Blooming  Live Session.mp3" type="audio/mpeg">
+    </audio>
+  </div>
+
+  <script>
+    let slideIndex = 0;
+    const slides = document.getElementsByClassName("slide");
+    const music = document.getElementById("bg-music");
+
+    function showSlides() {
+      for (let i = 0; i < slides.length; i++) {
+        slides[i].style.display = "none";
+      }
+      slideIndex++;
+      if (slideIndex > slides.length) { slideIndex = 1; }
+      slides[slideIndex - 1].style.display = "block";
+      setTimeout(showSlides, 2500); // เปลี่ยนรูปทุก 2.5 วินาที
+    }
+    showSlides();
+
+    function goNext() {
+      window.location.href = "letter.html";
+    }
+
+    document.addEventListener('click', () => {
+      music.volume = 0.4;
+      music.play().catch(()=>{});
+    });
+  </script>
+</body>
+</html>

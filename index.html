@@ -153,8 +153,8 @@
 <body>
   <!-- พื้นหลังเป็นวิดีโอ -->
   <video class="background-video" autoplay loop muted playsinline>
-  <source src="776500180.550421.mp4" type="video/mp4">
-</video>
+    <source src="776500180.550421.mp4" type="video/mp4" />
+  </video>
   <div class="overlay"></div>
 
   <div class="container">
@@ -175,7 +175,6 @@
     const noButton = document.getElementById('noButton');
     const backButton = document.getElementById('backButton');
     const question = document.getElementById('question');
-    const buttonsContainer = document.querySelector('.buttons');
     const cuteGif = document.getElementById('cute-gif');
     const backgroundMusic = document.getElementById('background-music');
 
@@ -218,14 +217,9 @@
     });
 
     // ปุ่มเป็น!
-    yesButton.addEventListener('click', () => {
-      question.textContent = 'สุดท้ายก็ต้องเป็นห้าห้าห้าา😈😈 รักเบบี๋นะคะ❤️';
-      question.classList.add('success-message');
-      noButton.classList.add('hidden');
-      yesButton.classList.add('hidden');
-      backButton.classList.remove('hidden');
-      cuteGif.src = "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3ZDM2NDUzNWQ4YTVoZGdib3Q5cDZzMXdmaDc3cTFlNGI2NTNtY2N6aiZlcD12MV9naWZzX3JlbGF0ZWQmY3Q9Zw/nE59vl2e7rWzbskQZ9/giphy.gif";
-    });
+yesButton.addEventListener('click', () => {
+  window.location.href = "memories.html";
+});
 
     // ปุ่มย้อนกลับ
     backButton.addEventListener('click', () => {
