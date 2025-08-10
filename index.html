@@ -6,25 +6,44 @@
   <title>เป็นแฟนกันนะ</title>
   <style>
     body {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
       margin: 0;
-      background-color: #fce4ec;
       font-family: 'Arial', sans-serif;
       text-align: center;
       overflow: hidden;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* วิดีโอพื้นหลัง */
+    video.background-video {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -2;
+    }
+
+    /* ชั้นมืดจางเพื่อให้ตัวหนังสืออ่านง่าย */
+    .overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 192, 203, 0.2);
+      z-index: -1;
     }
 
     .container {
-      position: relative;
-      background-color: #fff;
+      background-color: rgba(255, 255, 255, 0.85);
       padding: 40px;
       border-radius: 20px;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
       max-width: 90%;
       z-index: 2;
+      position: relative;
     }
 
     h1 {
@@ -55,7 +74,6 @@
     #yesButton {
       background-color: #4caf50;
     }
-
     #yesButton:hover {
       background-color: #43a047;
       transform: scale(1.05);
@@ -64,9 +82,15 @@
     #noButton {
       background-color: #ff5252;
     }
-
     #noButton:hover {
       background-color: #e53935;
+    }
+
+    #backButton {
+      background-color: #9e9e9e;
+    }
+    #backButton:hover {
+      background-color: #757575;
     }
 
     .hidden {
@@ -92,28 +116,54 @@
       margin-bottom: 20px;
     }
 
+    /* หัวใจลอย */
     .heart {
       position: absolute;
       font-size: 2em;
       color: #ff69b4;
       pointer-events: none;
-      animation: float-up 3s ease-out forwards;
-      z-index: 1;
+      animation: float-up 5s ease-out forwards;
+      z-index: 0;
     }
 
     @keyframes float-up {
       0% { transform: translateY(0) scale(1); opacity: 1; }
       100% { transform: translateY(-500px) scale(1.5); opacity: 0; }
     }
+
+    /* เอฟเฟกต์ตอนคลิก */
+    .click-effect {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: rgba(255,105,180,0.6);
+      border-radius: 50%;
+      transform: scale(0);
+      animation: clickAnim 0.6s ease-out;
+      pointer-events: none;
+    }
+    @keyframes clickAnim {
+      to {
+        transform: scale(5);
+        opacity: 0;
+      }
+    }
   </style>
 </head>
 <body>
+  <!-- พื้นหลังเป็นวิดีโอ -->
+  <video class="background-video" autoplay loop muted>
+    <source src="776500180.550421.mp4" type="video/mp4">
+  </video>
+  <div class="overlay"></div>
+
   <div class="container">
     <img id="cute-gif" src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExYjZyZnllOHY1eGFkMHo3cWdtOXEyMmR1c2xienppOGk5aDF5d2RyYSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/mmfnDaNegqw6wc6KnM/giphy.gif" alt="Cute animated GIF" />
     <h1 id="question">เป็นแฟนเค้าน้าาา</h1>
     <div class="buttons">
       <button id="yesButton">เป็น!</button>
       <button id="noButton">ม่ายเป็น</button>
+      <button id="backButton" class="hidden">ย้อนกลับ</button>
     </div>
     <audio id="background-music" loop autoplay>
       <source src="PUN - Skit Official Audio.mp3" type="audio/mpeg" />
@@ -123,31 +173,42 @@
   <script>
     const yesButton = document.getElementById('yesButton');
     const noButton = document.getElementById('noButton');
+    const backButton = document.getElementById('backButton');
     const question = document.getElementById('question');
     const buttonsContainer = document.querySelector('.buttons');
     const cuteGif = document.getElementById('cute-gif');
     const backgroundMusic = document.getElementById('background-music');
 
     let noClicks = 0;
-    let yesSize = 1; // ขนาดเริ่มต้น
+    let yesSize = 1;
 
-    document.addEventListener('click', () => {
-      backgroundMusic.play().catch(error => console.log("Audio error:", error));
-    }, { once: true });
+    document.addEventListener('click', (e) => {
+      backgroundMusic.volume = 0.3;
+      backgroundMusic.play().catch(() => {});
+      createClickEffect(e.clientX, e.clientY);
+    });
 
-    // เมื่อกดปุ่ม "ม่ายเป็น"
+    // หัวใจลอยตลอด
+    setInterval(() => {
+      const heart = document.createElement('div');
+      heart.classList.add('heart');
+      heart.textContent = '❤️';
+      heart.style.left = `${Math.random() * 100}vw`;
+      heart.style.bottom = `0px`;
+      heart.style.fontSize = `${Math.random() * 20 + 15}px`;
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 5000);
+    }, 800);
+
+    // ปุ่มม่ายเป็น
     noButton.addEventListener('click', () => {
       noClicks++;
       yesSize += 0.3;
       yesButton.style.transform = `scale(${yesSize})`;
 
       const noMessages = [
-        'แน่ใจ๊?',
-        'คิดดี๊ๆ',
-        'ไม่เป็นจีงงงงดิ',
-        'เอาดีๆไอเด่กก',
-        'ถามจริงงงง!',
-        'อะเค...ไม่เป็นยัย',
+        'แน่ใจ๊?', 'คิดดี๊ๆ', 'ไม่เป็นจีงงงงดิ', 
+        'เอาดีๆไอเด่กก', 'ถามจริงงงง!', 'อะเค...ไม่เป็นยัย'
       ];
       question.textContent = noMessages[noClicks % noMessages.length];
 
@@ -156,26 +217,29 @@
       }
     });
 
-    // เมื่อกดปุ่ม "เป็น!"
+    // ปุ่มเป็น!
     yesButton.addEventListener('click', () => {
       question.textContent = 'สุดท้ายก็ต้องเป็นห้าห้าห้าา😈😈 รักเบบี๋นะคะ❤️';
       question.classList.add('success-message');
-      buttonsContainer.classList.add('hidden');
+      noButton.classList.add('hidden');
+      yesButton.classList.add('hidden');
+      backButton.classList.remove('hidden');
       cuteGif.src = "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3ZDM2NDUzNWQ4YTVoZGdib3Q5cDZzMXdmaDc3cTFlNGI2NTNtY2N6aiZlcD12MV9naWZzX3JlbGF0ZWQmY3Q9Zw/nE59vl2e7rWzbskQZ9/giphy.gif";
-      createHeartEffect();
-      backgroundMusic.pause();
     });
 
-    // สร้างหัวใจลอย
-    function createHeartEffect() {
-      for (let i = 0; i < 20; i++) {
-        const heart = document.createElement('div');
-        heart.classList.add('heart');
-        heart.textContent = '❤️';
-        heart.style.left = `${Math.random() * 100}vw`;
-        heart.style.animationDelay = `${Math.random() * 2}s`;
-        document.body.appendChild(heart);
-      }
+    // ปุ่มย้อนกลับ
+    backButton.addEventListener('click', () => {
+      location.reload();
+    });
+
+    // เอฟเฟกต์ตอนคลิก
+    function createClickEffect(x, y) {
+      const effect = document.createElement('div');
+      effect.classList.add('click-effect');
+      effect.style.left = `${x - 10}px`;
+      effect.style.top = `${y - 10}px`;
+      document.body.appendChild(effect);
+      setTimeout(() => effect.remove(), 600);
     }
   </script>
 </body>
